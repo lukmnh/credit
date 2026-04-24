@@ -5,7 +5,6 @@ import org.example.model.Loan.Installment;
 import org.example.model.Vehicle;
 import org.example.service.LoanService;
 
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +21,10 @@ public class LoanServiceImpl implements LoanService {
             errors.add("Tahun kendaraan tidak valid (maksimal tahun " + currentYear + ").");
         }
 
-        if (vehicle.getCondition().equalsIgnoreCase("baru") && vehicle.getYear() < currentYear) {
-            errors.add("Kendaraan baru harus tahun " + currentYear + ".");
+        if (vehicle.getCondition().equalsIgnoreCase("baru")) {
+            if (vehicle.getYear() < (currentYear - 1)) {
+                errors.add("Kendaraan baru minimal harus tahun " + (currentYear - 1));
+            }
         }
 
         if (tenure < 1 || tenure > 6) {

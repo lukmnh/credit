@@ -31,7 +31,7 @@ public class CreditSimulatorView {
     }
 
     public void showMenu() {
-        println(StringUtils.repeat("-", 55));
+        println(StringUtils.repeat("═", 55));
         println("│                MENU UTAMA                 │");
         println(StringUtils.repeat("-", 55));
         println("│  [1] Simulasi Baru                        │");
@@ -46,17 +46,16 @@ public class CreditSimulatorView {
 
     public void showHelp() {
         println("");
-        println(StringUtils.repeat("-", 55));
+        println(StringUtils.repeat("═", 55));
         println("│          DAFTAR PERINTAH YANG TERSEDIA                │");
         println(StringUtils.repeat("-", 55));
-        println("│  1           Mulai simulasi baru                      │");
+        println("│  1           Mulai simulasi kredit baru               │");
         println("│  2           Load data dari API dan hitung otomatis   │");
-        println("│  3           Save sheet                               │");
-        println("│  4           Ganti sheet yang sudah ada               │");
+        println("│  3           Simpan data ke sheet baru                │");
+        println("│  4           Ganti/pindah ke sheet yang sudah ada     │");
         println(StringUtils.repeat("-", 55));
         println("│          JALANKAN DENGAN FILE INPUT:                  │");
         println("│          ./credit_simulator file_inputs.txt           │");
-        println("│          bin/credit_simulator file_inputs.txt         │");
         println(StringUtils.repeat("═", 55));
         println("");
     }
@@ -67,9 +66,9 @@ public class CreditSimulatorView {
         println(StringUtils.repeat("═", 55));
         println("   HASIL SIMULASI CICILAN");
         println(StringUtils.repeat("═", 55));
-        System.out.printf("   Kendaraan : %s (%s)",
+        System.out.printf("   Kendaraan : %s (%s)%n",
                 v.getVehicleType().getDisplayVehicleName(), StringUtils.capitalize(v.getCondition()));
-        System.out.printf("   Tahun : %d%n", v.getYear());
+        System.out.printf("   Tahun     : %d%n", v.getYear());
         System.out.printf("   Pinjaman  : %s%n", IDR_FORMAT.format(loan.getTotalLoanAmount()));
         System.out.printf("   DP        : %s%n", IDR_FORMAT.format(loan.getDownPayment()));
         System.out.printf("   Pokok     : %s%n", IDR_FORMAT.format(loan.getTotalLoanAmount() - loan.getDownPayment()));

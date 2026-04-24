@@ -18,9 +18,7 @@ public class VehicleFactory {
             case "motor" -> {
                 return new Vehicle(VehicleType.MOTOR, condition, year);
             }
-            default -> {
-                throw new IllegalArgumentException("Jenis kendaraan tidak valid: '" + inputType + "'. Gunakan 'Mobil' atau 'Motor'.");
-            }
+            default -> throw new IllegalArgumentException("Jenis kendaraan tidak valid: '" + inputType + "'. Gunakan 'Mobil' atau 'Motor'.");
         }
     }
 }

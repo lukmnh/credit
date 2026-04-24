@@ -1,23 +1,20 @@
 package org.example.util;
 
+import org.example.factory.VehicleFactory;
+import org.example.model.Loan;
+import org.example.model.Vehicle;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class JsonUtils {
-    public static String extractString(String json, String key) {
-        Pattern p = Pattern.compile("\"" + key + "\"\\s*:\\s*\"([^\"]+)\"");
-        Matcher m = p.matcher(json);
-        if (m.find())
-            return m.group(1);
-        throw new RuntimeException("Key tidak ditemukan: " + key);
-    }
-
-    public static int extractInt(String json, String key) {
-        return (int) extractNumber(json, key);
-    }
-
-    public static long extractLong(String json, String key) {
-        return (long) extractNumber(json, key);
+    public static String getJsonValue(String json, String key) {
+        Pattern pattern = Pattern.compile("\"" + key + "\":\\s*\"?([^,\"}]+)\"?");
+        Matcher matcher = pattern.matcher(json);
+        if (matcher.find()) {
+            return matcher.group(1).trim();
+        }
+        return "";
     }
 
     private static double extractNumber(String json, String key) {

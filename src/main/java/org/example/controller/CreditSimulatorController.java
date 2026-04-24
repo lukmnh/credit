@@ -5,8 +5,6 @@ import org.example.model.Loan;
 import org.example.model.Vehicle;
 import org.example.service.LoanService;
 import org.example.service.WebLoaderService;
-import org.example.service.impl.LoanServiceImpl;
-import org.example.service.impl.WebLoaderServiceImpl;
 import org.example.util.NumberUtils;
 import org.example.view.CreditSimulatorView;
 
@@ -32,6 +30,7 @@ public class CreditSimulatorController {
     }
 
     public void start() {
+        handleCheckStatus(true);
         view.showBanner();
         boolean running = true;
         while (running) {
@@ -39,16 +38,16 @@ public class CreditSimulatorController {
             String input = view.readInput("").toLowerCase();
 
             switch (input) {
-                case "1": case "new": handleNewSimulation(); break;
-                case "2": case "load": loadDataFromApi(); break;
-                case "3": case "save": saveSheet(); break;
-                case "4": case "switch": switchSheet(); break;
-                case "0": case "exit": case "quit":
+                case "1", "new"    -> handleNewSimulation();
+                case "2", "load"   -> loadDataFromApi();
+                case "3", "save"   -> saveSheet();
+                case "4", "switch" -> switchSheet();
+                case "0", "exit", "quit" -> {
                     running = false;
                     view.println("\nTerima kasih. Sampai jumpa!");
-                    break;
-                case "help": case "show": view.showHelp(); break;
-                default: view.println("Pilihan tidak valid. Ketik 'help' untuk daftar perintah.");
+                }
+                case "help", "show" -> view.showHelp();
+                default -> view.println("Pilihan tidak valid. Ketik 'help' untuk daftar perintah.");
             }
         }
     }
@@ -133,5 +132,24 @@ public class CreditSimulatorController {
         currentSheet = name;
         currentData = sheets.get(name);
         view.println("Berpindah ke sheet: " + name);
+    }
+
+    private void handleCheckStatus(boolean interactive) {
+        if (interactive) view.println("\n=== SYSTEM STATUS CHECK ===");
+
+        boolean apiReady = webLoaderService.isApiReady();
+        boolean serviceReady = (loanService != null);
+
+        if (interactive) {
+            view.println("1. HTTP Status    : " + (apiReady ? "Ready" : "Offline"));
+            view.println("2. Loan Service   : " + (serviceReady ? "Ready" : "Offline"));
+            view.println("3. Active Sheet   : [" + currentSheet + "]");
+
+            if (apiReady) {
+                view.println("\n[KESIMPULAN] Sistem siap untuk Load Data Otomatis.");
+            } else {
+                view.println("\n[KESIMPULAN] API bermasalah. Gunakan input manual (Menu 2).");
+            }
+        }
     }
 }

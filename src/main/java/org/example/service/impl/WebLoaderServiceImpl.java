@@ -9,13 +9,18 @@ import org.example.util.JsonUtils;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class WebLoaderServiceImpl implements WebLoaderService {
-    private static final String API_URL = "https://mocki.io/v1/59da4f38-8cd8-4205-9405-6472ae19da0c";
+    private static final String API_URL = "https://mocki.io/v1/efcb8213-46fa-45c2-8692-cd91b30c0e19";
+
 
     @Override
-    public Loan fetchLoanData() throws Exception {
+    public List<Loan> fetchLoanData() throws Exception {
         HttpURLConnection connection = (HttpURLConnection) new URL(API_URL).openConnection();
         connection.setRequestMethod("GET");
 
@@ -26,8 +31,20 @@ public class WebLoaderServiceImpl implements WebLoaderService {
         InputStream responseStream = connection.getInputStream();
         Scanner scanner = new Scanner(responseStream).useDelimiter("\\A");
         String json = scanner.hasNext() ? scanner.next() : "";
+        List<Loan> loanList = new ArrayList<>();
 
-        return parseJsonToLoan(json);
+        if (!json.startsWith("[")) {
+            json = "[" + json + "]";
+        }
+        Pattern pattern = Pattern.compile("\\{(?:[^{}]|\\{[^{}]*\\})*\\}", Pattern.DOTALL);
+        Matcher matcher = pattern.matcher(json);
+
+        while (matcher.find()) {
+            String itemJson = matcher.group(0);
+            loanList.add(parseJsonToLoan(itemJson));
+        }
+
+        return loanList;
     }
 
     @Override

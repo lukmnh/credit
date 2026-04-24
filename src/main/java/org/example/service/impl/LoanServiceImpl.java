@@ -54,21 +54,21 @@ public class LoanServiceImpl implements LoanService {
 
         double currentRate = (vehicle.getVehicleType().getDisplayVehicleName().equalsIgnoreCase("mobil")) ? 8.0 : 9.0;
 
-//        for (int year = 1; year <= tenure; year++) {
-//            if (year % 2 == 0) {
-//                currentRate += 0.5;
-//            } else {
-//                currentRate += 0.1;
-//            }
-
         for (int year = 1; year <= tenure; year++) {
-            if (year > 1) {
-                if (year % 2 == 0) {
-                    currentRate += 0.1;
-                } else {
-                    currentRate += 0.5;
-                }
+            if (year % 2 == 0) {
+                currentRate += 0.5;
+            } else {
+                currentRate += 0.1;
             }
+
+//        for (int year = 1; year <= tenure; year++) {
+//            if (year > 1) {
+//                if (year % 2 == 0) {
+//                    currentRate += 0.1;
+//                } else {
+//                    currentRate += 0.5;
+//                }
+//            }
             double monthlyAmount = calculateMonthly(principal, currentRate, tenure);
             installments.add(new Loan.Installment(year, currentRate, monthlyAmount));
         }

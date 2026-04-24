@@ -2,7 +2,9 @@ package org.example.service;
 
 import org.example.model.Loan;
 
+import java.util.List;
+
 public interface WebLoaderService {
-    Loan fetchLoanData() throws Exception;
+    List<Loan> fetchLoanData() throws Exception;
     boolean isApiReady();
 }

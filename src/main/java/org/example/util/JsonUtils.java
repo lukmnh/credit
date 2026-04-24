@@ -16,12 +16,4 @@ public class JsonUtils {
         }
         return "";
     }
-
-    private static double extractNumber(String json, String key) {
-        Pattern p = Pattern.compile("\"" + key + "\"\\s*:\\s*([\\d.]+)");
-        Matcher m = p.matcher(json);
-        if (m.find())
-            return Double.parseDouble(m.group(1));
-        throw new RuntimeException("Key numerik tidak ditemukan: " + key);
-    }
 }

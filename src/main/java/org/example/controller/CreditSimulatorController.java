@@ -86,9 +86,15 @@ public class CreditSimulatorController {
 
     private void loadDataFromApi() {
         try {
-            Loan loan = webLoaderService.fetchLoanData();
-            view.println("Data berhasil diambil.\n");
-            processAndDisplay(loan);
+            List<Loan> loans = webLoaderService.fetchLoanData();
+            if (loans.isEmpty()) {
+                view.println("Data kosong.");
+                return;
+            }
+            
+            for (Loan loan : loans) {
+                processAndDisplay(loan);
+            }
         } catch (Exception e) {
             view.println("Gagal mengambil data dari API: " + e.getMessage());
         }

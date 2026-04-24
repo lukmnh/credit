@@ -1,17 +1,37 @@
 package org.example;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+import org.example.controller.CreditSimulatorController;
+import org.example.model.Loan;
+import org.example.service.impl.LoanServiceImpl;
+import org.example.service.impl.WebLoaderServiceImpl;
+import org.example.util.FileUtils;
+import org.example.view.CreditSimulatorView;
+
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
+        CreditSimulatorView view = new CreditSimulatorView();
+        LoanServiceImpl loanService = new LoanServiceImpl();
+        WebLoaderServiceImpl webLoader = new WebLoaderServiceImpl();
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        CreditSimulatorController controller = new CreditSimulatorController(view, loanService, webLoader);
+        if (args.length > 0) {
+            String filePath = args[0];
+            try {
+                List<Loan> loans = FileUtils.parseFile(filePath);
+
+                if (loans.isEmpty()) {
+                    System.err.println("File '" + filePath + "' tidak mengandung data valid.");
+                    System.exit(1);
+                }
+                controller.startWithFile(loans);
+            } catch (Exception e) {
+                System.err.println("Gagal menjalankan mode file: " + e.getMessage());
+                System.exit(1);
+            }
+        } else {
+            controller.start();
         }
     }
 }

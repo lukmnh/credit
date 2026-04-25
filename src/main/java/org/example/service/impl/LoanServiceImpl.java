@@ -3,6 +3,7 @@ package org.example.service.impl;
 import org.example.model.Loan;
 import org.example.model.Loan.Installment;
 import org.example.model.Vehicle;
+import org.example.model.VehicleType;
 import org.example.service.LoanService;
 
 import java.util.ArrayList;
@@ -52,7 +53,7 @@ public class LoanServiceImpl implements LoanService {
 
         List<Installment> installments = new ArrayList<>();
 
-        double currentRate = (vehicle.getVehicleType().getDisplayVehicleName().equalsIgnoreCase("mobil")) ? 8.0 : 9.0;
+        double currentRate = (vehicle.getVehicleType().getDisplayVehicleName().equalsIgnoreCase("mobil")) ? VehicleType.MOBIL.getBaseInterestRate() : VehicleType.MOTOR.getBaseInterestRate();
 
         for (int year = 1; year <= tenure; year++) {
             if (year % 2 == 0) {
